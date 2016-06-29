@@ -1,0 +1,51 @@
+- name: Create JBoss Data Grid group ({{ jboss_datagrid_group }})
+  group:
+    name: "{{ jboss_datagrid_group }}"
+    gid: 401
+    system: yes
+  tags:
+    - jboss_datagrid
+    - jboss_datagrid-user
+    - jboss_datagrid-group
+
+- name: Create JBoss Data Grid user ({{ jboss_datagrid_user }})
+  user:
+    name: "{{ jboss_datagrid_user }}"
+    comment: JBoss Data Grid
+    group: "{{ jboss_datagrid_group }}"
+    home: "{{ jboss_datagrid_home }}"
+    system: yes
+    uid: 401
+  tags:
+    - jboss_datagrid
+    - jboss_datagrid-user
+
+- name: Create JBoss Data Grid directories
+  file:
+    dest: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ jboss_datagrid_user }}"
+    group: "{{ jboss_datagrid_group }}"
+  with_items:
+    - "{{ jboss_datagrid_service_log_dir }}"
+    - "{{ jboss_datagrid_service_data_dir }}"
+  tags:
+    - jboss_datagrid
+
+- name: Copy JBoss Data Grid service configuration ({{ jboss_datagrid_service_name }}.conf.j2)
+  template:
+    src: "{{ jboss_datagrid_service_name }}.conf.j2"
+    dest: /etc/sysconfig/{{ jboss_datagrid_service_name }}
+  tags:
+    - jboss_datagrid
+
+- name: Copy {{ jboss_datagrid_service_name }} init file
+  template:
+    src: "{{ jboss_datagrid_service_name }}.sh.j2"
+    dest: /etc/init.d/{{ jboss_datagrid_service_name }}
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - jboss_datagrid

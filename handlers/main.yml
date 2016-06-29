@@ -1,2 +1,4 @@
----
-# handlers file for jboss-datagrid
+- name: restart jdg
+  service:
+    name: "{{ jboss_datagrid_service_name }}"
+    state: restarted

@@ -1,2 +1,22 @@
----
-# defaults file for jboss-datagrid
+jboss_datagrid_base_version: 6.6
+jboss_datagrid_minor_version: 0
+jboss_datagrid_zip_file: jboss-datagrid-{{ jboss_datagrid_base_version }}.{{ jboss_datagrid_minor_version }}-server.zip
+jboss_datagrid_mode: standalone
+jboss_datagrid_download_dir: /var/tmp
+jboss_datagrid_library_dest: /opt
+jboss_datagrid_home: "{{ jboss_datagrid_library_dest }}/jboss-datagrid-{{ jboss_datagrid_base_version }}.{{ jboss_datagrid_minor_version }}-server"
+jboss_datagrid_user: jboss-dg
+jboss_datagrid_group: jboss-dg
+jboss_datagrid_admin_user: jdgadimn
+jboss_datagrid_admin_password: JDGadmin-962
+
+jboss_datagrid_service_name: jboss-dg
+jboss_datagrid_service_log_dir: /var/log/{{ jboss_datagrid_service_name }}
+jboss_datagrid_service_data_dir: /var/run/{{ jboss_datagrid_service_name }}
+
+# Service configuration
+jboss_datagrid_ispn_server_console_log: "{{ jboss_datagrid_service_log_dir }}/console.log"
+jboss_datagrid_ispn_server_user: "{{ jboss_datagrid_user }}"
+jboss_datagrid_startup_wait: 30
+jboss_datagrid_shutdown_wait: 30
+

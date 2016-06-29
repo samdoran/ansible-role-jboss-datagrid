@@ -1,2 +1,40 @@
----
-# tasks file for jboss-datagrid
+- include: configure_service.yml
+
+- name: Copy JBoss Data Grip zip file to {{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file }}
+  copy:
+    src: "{{ jboss_datagrid_zip_file }}"
+    dest: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file }}"
+  tags:
+    - jboss_datagrid
+
+- name: Extract JBoss Data Grid
+  unarchive:
+    src: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file }}"
+    dest: "{{ jboss_datagrid_home }}"
+    copy: no
+  register: jboss_datagrid_install
+  tags:
+    - jboss_datagrid
+
+- name: Copy JBoss Data Grid server configuration ({{ jboss_datagrid_mode }}.xml)
+  copy:
+    src: "{{ jboss_datagrid_mode }}.xml"
+    dest: "{{ jboss_datagrid_home }}/{{ jboss_datagrid_mode }}.xml"
+    owner: "{{ jboss_datagrid_user }}"
+    group: "{{ jboss_datagrid_group }}"
+  tags:
+    - jboss_datagrid
+
+- name: Create default JBoss admin user
+  command: "{{ jboss_datagrid_home }}/bin/add-user.sh -s -r ManagementRealm -u {{ jboss_datagrid_admin_user }} -p {{ jboss_datagrid_admin_password }}"
+  when: jboss_datagrid_install.changed
+  tags:
+    - jboss_datagrid
+
+- name: Start and enable JBoss Data Grid
+  service:
+    name: "{{ jboss_datagrid_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+    - jboss_datagrid

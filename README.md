@@ -2,7 +2,7 @@ JBOSS Data Grid
 =========
 [![Galaxy](https://img.shields.io/badge/galaxy-samdoran.jboss--datagrid-blue.svg?style=flat)](https://galaxy.ansible.com/samdoran/jboss-datagrid)
 
-A brief description of the role goes here.
+Install JBoss Data Grid
 
 Requirements
 ------------
@@ -27,7 +27,8 @@ Example Playbook
 
     - hosts: jdg
       roles:
-         - samdoran.jboss-datagrid
+        - samdoran.java
+        - samdoran.jboss-datagrid
 
 License
 -------
