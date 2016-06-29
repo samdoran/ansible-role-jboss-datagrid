@@ -10,7 +10,7 @@
 - name: Extract JBoss Data Grid
   unarchive:
     src: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}"
-    dest: "{{ jboss_datagrid_home }}"
+    dest: "{{ jboss_datagrid_library_dest }}"
     copy: no
   register: jboss_datagrid_install
   tags:
