@@ -1,15 +1,15 @@
 - include: configure_service.yml
 
-- name: Copy JBoss Data Grip zip file to {{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file }}
+- name: Copy JBoss Data Grip zip file to {{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}
   copy:
     src: "{{ jboss_datagrid_zip_file }}"
-    dest: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file }}"
+    dest: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}"
   tags:
     - jboss_datagrid
 
 - name: Extract JBoss Data Grid
   unarchive:
-    src: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file }}"
+    src: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}"
     dest: "{{ jboss_datagrid_home }}"
     copy: no
   register: jboss_datagrid_install
