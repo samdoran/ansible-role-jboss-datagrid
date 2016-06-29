@@ -31,10 +31,10 @@
   tags:
     - jboss_datagrid
 
-- name: Start and enable JBoss Data Grid
-  service:
-    name: "{{ jboss_datagrid_service_name }}"
-    state: started
-    enabled: yes
-  tags:
-    - jboss_datagrid
+# - name: Start and enable JBoss Data Grid
+#   service:
+#     name: "{{ jboss_datagrid_service_name }}"
+#     state: started
+#     enabled: yes
+#   tags:
+#     - jboss_datagrid
