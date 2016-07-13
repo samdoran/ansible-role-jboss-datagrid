@@ -25,19 +25,10 @@
                     <properties path="mgmt-users.properties" relative-to="jboss.server.config.dir"/>
                 </authentication>
             </security-realm>
-            <security-realm name="ApplicationRealm">                
-	       <server-identities>
-	          <ssl>
-		      <keystore path="infinispan.jks" relative-to="jboss.server.config.dir"
-				keystore-password="limegreen" 
-				alias="infinispan" key-password="limegreen" />
-		  </ssl>
-	        </server-identities>
+            <security-realm name="ApplicationRealm">
                 <authentication>
+                    <local default-user="$local" allowed-users="*"/>
                     <properties path="application-users.properties" relative-to="jboss.server.config.dir"/>
-                    <truststore path="infinispan.jks" relative-to="jboss.server.config.dir"
-			keystore-password="limegreen"/>
-	            <local default-user="$local" allowed-users="*" />
                 </authentication>
                 <authorization>
                     <properties path="application-roles.properties" relative-to="jboss.server.config.dir"/>
@@ -98,67 +89,43 @@
         <subsystem xmlns="urn:infinispan:server:endpoint:6.1">
             <hotrod-connector socket-binding="hotrod" cache-container="clustered">
                 <topology-state-transfer lazy-retrieval="false" lock-timeout="1000" replication-timeout="5000"/>
-                 <encryption security-realm="ApplicationRealm" require-ssl-client-auth="true" />
             </hotrod-connector>
-            <memcached-connector socket-binding="memcached" cache-container="clustered"/>
+            <memcached-connector socket-binding="memcached" cache-container="clustered"/> 
             <rest-connector virtual-server="default-host" cache-container="clustered" security-domain="other" auth-method="BASIC"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:1.1">
             <datasources>
-               <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
-                 <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1</connection-url>
-                 <driver>h2</driver>
-                 <security>
-                 <user-name>sa</user-name>
-                 <password>sa</password>
-                 </security>
-              </datasource>
-              <drivers>
-                 <driver name="h2" module="com.h2database.h2">
-                   <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
-                 </driver>
-              </drivers>
-            </datasources>
+			</datasources>
         </subsystem>
         <subsystem xmlns="urn:infinispan:server:core:6.1" default-cache-container="clustered">
             <cache-container name="clustered" default-cache="default" statistics="true">
-                <transport executor="infinispan-transport" lock-timeout="60000"/>
-                <!-- <replicated-cache name="docs" mode="ASYNC" start="EAGER">
-                    <compatibility enabled="true"/>
-                    <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
-                    <transaction mode="NONE"/>
-                    <leveldb-store passivation="false" preload="true">
-                    	<expiration path="expiration"/>
-                    </leveldb-store>
-                </replicated-cache> -->
-                <distributed-cache name="docs" mode="ASYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
-                    <compatibility enabled="true"/>
+               <transport executor="infinispan-transport" lock-timeout="60000"/>
+               <distributed-cache name="mcr_docmetadata" mode="ASYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
+                  <!--<compatibility enabled="true"/> -->
                     <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="true"/>
                     <transaction mode="NONE"/>
-                    <leveldb-store passivation="false" preload="true">
-                    	<expiration path="expiration" queue-size="200000"/>
-                    </leveldb-store>
-                </distributed-cache>
-
-                <distributed-cache name="dmitasks" mode="ASYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
-                    <compatibility enabled="true"/>
-                    <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="true"/>
-                    <transaction mode="NONE"/>
-                    <leveldb-store passivation="false" preload="true">
-                    	<expiration path="expiration" queue-size="200000"/>
-                    </leveldb-store>
-                </distributed-cache>
-
-                <distributed-cache name="default" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
-                    <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
-                    <transaction mode="NONE"/>
-                </distributed-cache>
-                <distributed-cache name="memcachedCache" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
-                    <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
-                    <transaction mode="NONE"/>
-                </distributed-cache>
-                <distributed-cache name="namedCache" mode="SYNC" start="EAGER"/>
-            </cache-container>
+                    <eviction strategy="LRU" max-entries="200000" />
+                    <expiration />
+                  <!--<leveldb-store passivation="false" preload="true">
+                      <expiration path="expiration" queue-size="200000"/>
+                  </leveldb-store> -->
+               </distributed-cache>
+               <distributed-cache name="mcr_dmiissues" mode="ASYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
+                  <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
+                  <transaction mode="NONE"/>
+                  <eviction strategy="LRU" max-entries="2000000" />
+                  <expiration />
+               </distributed-cache>
+               <distributed-cache name="default" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
+                  <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
+                  <transaction mode="NONE"/>
+               </distributed-cache>
+               <distributed-cache name="memcachedCache" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
+                 <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
+                 <transaction mode="NONE"/>
+               </distributed-cache>
+               <distributed-cache name="namedCache" mode="SYNC" start="EAGER"/>
+               </cache-container>
             <cache-container name="security"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jca:1.1">
@@ -215,7 +182,29 @@
                 <protocol type="FRAG2"/>
                 <protocol type="RSVP"/>
             </stack>
-            
+<!--            <stack name="s3">
+                <transport type="TCP" socket-binding="jgroups-tcp"/>
+                <protocol type="S3_PING">
+                    <property name="location">${jgroups.s3.bucket}</property>
+                    <property name="access_key">${jgroups.s3.access_key}</property>
+                    <property name="secret_access_key">${jgroups.s3.secret_access_key}</property>
+                    <property name="pre_signed_delete_url">${jgroups.s3.pre_signed_delete_url}</property>
+                    <property name="pre_signed_put_url">${jgroups.s3.pre_signed_put_url}</property>
+                    <property name="prefix">${jgroups.s3.prefix}</property>
+                </protocol>
+                <protocol type="MERGE2"/>
+                <protocol type="FD_SOCK" socket-binding="jgroups-tcp-fd"/>
+                <protocol type="FD"/>
+                <protocol type="VERIFY_SUSPECT"/>
+                <protocol type="pbcast.NAKACK2"/>
+                <protocol type="UNICAST3"/>
+                <protocol type="pbcast.STABLE"/>
+                <protocol type="pbcast.GMS"/>
+                <protocol type="UFC"/>
+                <protocol type="MFC"/>
+                <protocol type="FRAG2"/>
+                <protocol type="RSVP"/>
+            </stack>-->
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jmx:1.1">
             <show-model value="true"/>
@@ -301,7 +290,7 @@
         <socket-binding name="jgroups-tcp-fd" port="57600"/>
         <socket-binding name="jgroups-udp" port="55200" multicast-address="${jboss.default.multicast.address:234.99.54.14}" multicast-port="45688"/>
         <socket-binding name="jgroups-udp-fd" port="54200"/>
-        <socket-binding name="memcached" interface="management" port="11211"/>
+        <socket-binding name="memcached" interface="management" port="11211"/> 
         <socket-binding name="modcluster" port="0" multicast-address="224.0.1.115" multicast-port="23364"/>
         <socket-binding name="remoting" port="4447"/>
         <socket-binding name="txn-recovery-environment" port="4712"/>
