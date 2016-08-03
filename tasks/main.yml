@@ -12,6 +12,9 @@
     src: "{{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}"
     dest: "{{ jboss_datagrid_library_dest }}"
     copy: no
+    creates: "{{ jboss_datagrid_home }}/version.txt"
+    owner: "{{ jboss_datagrid_user }}"
+    group: "{{ jboss_datagrid_group }}"
   register: jboss_datagrid_install
   tags:
     - jboss_datagrid
