@@ -1,5 +1,10 @@
 - include: configure_service.yml
 
+- name: Include variables
+  include_vars: "{{ jboss_datagrid_configuration }}.yml"
+  tags:
+    - always
+
 - name: Copy JBoss Data Grip zip file to {{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}
   copy:
     src: "{{ jboss_datagrid_zip_file }}"
@@ -19,12 +24,24 @@
   tags:
     - jboss_datagrid
 
-- name: Copy JBoss Data Grid server configuration ({{ jboss_datagrid_mode }}.xml)
-  copy:
-    src: "{{ jboss_datagrid_mode }}.xml"
-    dest: "{{ jboss_datagrid_home }}/{{ jboss_datagrid_mode }}.xml"
+- name: Copy JBoss Data Grid runtime configuration ({{ jboss_datagrid_runtime_config_file }})
+  template:
+    src: runtime.conf.j2
+    dest: "{{ jboss_datagrid_runtime_config_file }}"
     owner: "{{ jboss_datagrid_user }}"
     group: "{{ jboss_datagrid_group }}"
+  notify: restart jdg
+  tags:
+    - jboss_datagrid
+    - jboss_config
+
+- name: Copy JBoss Data Grid server configuration ({{ jboss_datagrid_configuration }}.xml)
+  template:
+    src: "{{ jboss_datagrid_configuration }}.xml.j2"
+    dest: "{{ jboss_datagrid_home }}/standalone/configuration/{{ jboss_datagrid_configuration }}.xml"
+    owner: "{{ jboss_datagrid_user }}"
+    group: "{{ jboss_datagrid_group }}"
+  notify: restart jdg
   tags:
     - jboss_datagrid
 
@@ -34,10 +51,10 @@
   tags:
     - jboss_datagrid
 
-# - name: Start and enable JBoss Data Grid
-#   service:
-#     name: "{{ jboss_datagrid_service_name }}"
-#     state: started
-#     enabled: yes
-#   tags:
-#     - jboss_datagrid
+- name: Start and enable JBoss Data Grid
+  service:
+    name: "{{ jboss_datagrid_service_name }}"
+    state: started
+    enabled: yes
+  tags:
+    - jboss_datagrid

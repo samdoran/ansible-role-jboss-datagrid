@@ -1,0 +1,13 @@
+jboss_datagrid_runtime_java_opts:
+  - "-Xms{{ jboss_datagrid_runtime_initial_memory }} -Xmx{{ jboss_datagrid_runtime_max_memory }} -XX:MaxPermSize={{ jboss_datagrid_runtime_maxpermsize }} -Djava.net.preferIPv4Stack=true"
+  - "-Djboss.modules.system.pkgs=$JBOSS_MODULES_SYSTEM_PKGS -Djava.awt.headless=true"
+  - "-Djboss.server.default.config={{ jboss_datagrid_configuration }}.xml"
+  - "-Djboss.bind.address={{ jboss_datagrid_runtime_bind_address }}"
+  - "-Djboss.bind.address.management={{ jboss_datagrid_bind_address_management }}"
+  - "-Duser.timezone={{ jboss_datagrid_runtime_logging_timezone }}"
+  - "-Dsun.nio.ch.bugLevel=''"
+
+  # - "-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n"           # Sample JPDA settings for remote socket debugging (clustered)
+  # - "-Xrunjdwp:transport=dt_shmem,server=y,suspend=n,address=jboss"           # Sample JPDA settings for shared memory debugging (clustered)
+  # - "-Djboss.modules.lockless=false"                  # Do not use JBoss Modules lockless mode
+  # - "-Djboss.modules.metrics=true"                    # Gather JBoss Modules metrics

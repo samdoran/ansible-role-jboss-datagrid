@@ -33,9 +33,9 @@
   tags:
     - jboss_datagrid
 
-- name: Copy JBoss Data Grid service configuration ({{ jboss_datagrid_service_name }}.conf.j2)
+- name: Copy JBoss Data Grid service configuration (sysconfig_{{ jboss_datagrid_service_name }}.j2)
   template:
-    src: "{{ jboss_datagrid_service_name }}.conf.j2"
+    src: "sysconfig_{{ jboss_datagrid_service_name }}.j2"
     dest: /etc/sysconfig/{{ jboss_datagrid_service_name }}
   tags:
     - jboss_datagrid
