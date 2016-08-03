@@ -34,3 +34,6 @@ jboss_datagrid_runtime_java_home: ""                       # Specify the locatio
 jboss_datagrid_runtime_java_bin: ""                        # Specify the exact Java VM executable to use.
 jboss_datagrid_runtime_preserve_java_opts: ""              # Prevent manipulation of JVM options by shell scripts. true or false
 jboss_datagrid_runtime_secmgr: ""                          # Whether to run with a security manager enabled. true or false
+
+# Kernel parameters
+# jboss_datagrid_kernel_parameters: []

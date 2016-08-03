@@ -5,6 +5,18 @@
   tags:
     - always
 
+- name: Set kernel parameters
+  sysctl:
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    value: "{{ item.value }}"
+    reload: yes
+  with_items: "{{ jboss_datagrid_kernel_parameters }}"
+  when: jboss_datagrid_kernel_parameters is defined
+  tags:
+    - jboss_datagrid
+    - jboss_datagrid_kernel_parameters
+
 - name: Copy JBoss Data Grip zip file to {{ jboss_datagrid_download_dir }}/{{ jboss_datagrid_zip_file | basename }}
   copy:
     src: "{{ jboss_datagrid_zip_file }}"
