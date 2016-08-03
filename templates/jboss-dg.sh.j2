@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# JBoss Data Grid {{ jboss_datagrid_mode }} control script
+# JBoss Data Grid {{ jboss_datagrid_configuration }} control script
 #
 # chkconfig: - 80 20
 # description: JBoss Data Grid
-# processname: {{ jboss_datagrid_mode }}
-# pidfile: {{ jboss_datagrid_service_data_dir }}/{{ jboss_datagrid_service_name }}-{{ jboss_datagrid_mode }}.pid
+# processname: {{ jboss_datagrid_configuration }}
+# pidfile: {{ jboss_datagrid_service_data_dir }}/{{ jboss_datagrid_service_name }}-{{ jboss_datagrid_configuration }}.pid
 # config: /etc/sysconfig/{{ jboss_datagrid_service_name }}
 
 # Source function library.
@@ -36,7 +36,7 @@ fi
 export ISPN_SERVER_HOME
 
 if [ -z "$ISPN_SERVER_PIDFILE" ]; then
-  ISPN_SERVER_PIDFILE="{{ jboss_datagrid_service_data_dir }}/$prog-{{ jboss_datagrid_mode }}.pid"
+  ISPN_SERVER_PIDFILE="{{ jboss_datagrid_service_data_dir }}/$prog-{{ jboss_datagrid_configuration }}.pid"
 fi
 export ISPN_SERVER_PIDFILE
 
@@ -53,10 +53,10 @@ if [ -z "$SHUTDOWN_WAIT" ]; then
 fi
 
 if [ -z "$ISPN_SERVER_CONFIG" ]; then
-  ISPN_SERVER_CONFIG={{ jboss_datagrid_mode }}.xml
+  ISPN_SERVER_CONFIG={{ jboss_datagrid_configuration }}.xml
 fi
 
-ISPN_SERVER_SCRIPT=$ISPN_SERVER_HOME/bin/{{ jboss_datagrid_mode }}.sh
+ISPN_SERVER_SCRIPT=$ISPN_SERVER_HOME/bin/{{ jboss_datagrid_configuration }}.sh
 
 CMD_PREFIX=''
 
