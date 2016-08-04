@@ -65,7 +65,7 @@
             </logger>
             <logger category="org.jgroups">
               <level name="TRACE"/>
-            </logger>             
+            </logger>
             <logger category="org.apache.tomcat.util.modeler">
                 <level name="WARN"/>
             </logger>
@@ -93,7 +93,7 @@
             <hotrod-connector socket-binding="hotrod" cache-container="clustered">
                 <topology-state-transfer lazy-retrieval="false" lock-timeout="1000" replication-timeout="5000"/>
             </hotrod-connector>
-            <memcached-connector socket-binding="memcached" cache-container="clustered"/> 
+            <memcached-connector socket-binding="memcached" cache-container="clustered"/>
             <rest-connector virtual-server="default-host" cache-container="clustered" security-domain="other" auth-method="BASIC"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:datasources:1.1">
@@ -297,12 +297,12 @@
         <socket-binding name="hotrod" interface="public" port="11222"/>
         <socket-binding name="http" port="8080"/>
         <socket-binding name="https" port="8443"/>
-        <socket-binding name="jgroups-mping" port="0" multicast-address="${jboss.default.multicast.address:234.10.10.10}" multicast-port="45700"/>
+        <socket-binding name="jgroups-mping" port="0" multicast-address="${jboss.default.multicast.address:{{ jboss_datagrid_multicast_address }}}" multicast-port="45700"/>
         <socket-binding name="jgroups-tcp" port="7600"/>
         <socket-binding name="jgroups-tcp-fd" port="57600"/>
-        <socket-binding name="jgroups-udp" port="55200" multicast-address="${jboss.default.multicast.address:234.10.10.10}" multicast-port="45688"/>
+        <socket-binding name="jgroups-udp" port="55200" multicast-address="${jboss.default.multicast.address:{{ jboss_datagrid_multicast_address }}}" multicast-port="45688"/>
         <socket-binding name="jgroups-udp-fd" port="54200"/>
-        <socket-binding name="memcached" interface="management" port="11211"/> 
+        <socket-binding name="memcached" interface="management" port="11211"/>
         <socket-binding name="modcluster" port="0" multicast-address="224.0.1.115" multicast-port="23364"/>
         <socket-binding name="remoting" port="4447"/>
         <socket-binding name="txn-recovery-environment" port="4712"/>

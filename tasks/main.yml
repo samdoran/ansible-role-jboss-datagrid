@@ -56,6 +56,7 @@
   notify: restart jdg
   tags:
     - jboss_datagrid
+    - jboss_config
 
 - name: Create default JBoss admin user
   command: "{{ jboss_datagrid_home }}/bin/add-user.sh -s -r ManagementRealm -u {{ jboss_datagrid_admin_user }} -p {{ jboss_datagrid_admin_password }}"
