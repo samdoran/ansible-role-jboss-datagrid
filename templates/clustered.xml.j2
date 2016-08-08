@@ -105,7 +105,7 @@
                   <!--<compatibility enabled="true"/> -->
                     <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="true"/>
                     <transaction mode="NONE"/>
-                    <eviction strategy="LRU" max-entries="750000" />
+                    <eviction strategy="LRU" max-entries="{{ jboss_datagrid_cache_max_entries }}" />
                     <expiration />
                   <!--<leveldb-store passivation="false" preload="true">
                       <expiration path="expiration" queue-size="200000"/>
@@ -114,13 +114,13 @@
                <distributed-cache name="mcr_dmi_byptn_years" mode="ASYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
                   <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="false"/>
                   <transaction mode="NONE"/>
-                  <eviction strategy="LRU" max-entries="750000" />
+                  <eviction strategy="LRU" max-entries="{{ jboss_datagrid_cache_max_entries }}" />
                   <expiration />
                </distributed-cache>
                <distributed-cache name="mcr_dmi_byapp" mode="ASYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">
                <locking isolation="READ_COMMITTED" acquire-timeout="30000" concurrency-level="1000" striping="true"/>
                <transaction mode="NONE"/>
-               <eviction strategy="LRU" max-entries="750000"/>
+               <eviction strategy="LRU" max-entries="{{ jboss_datagrid_cache_max_entries }}"/>
                <expiration/>
                </distributed-cache>
                <distributed-cache name="default" mode="SYNC" segments="20" owners="2" remote-timeout="30000" start="EAGER">

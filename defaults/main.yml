@@ -15,13 +15,13 @@ jboss_datagrid_service_name: jboss-dg
 jboss_datagrid_service_log_dir: /var/log/{{ jboss_datagrid_service_name }}
 jboss_datagrid_service_data_dir: /var/run/{{ jboss_datagrid_service_name }}
 
-# Service configuration
+# Service configuration (/etc/sysconfig/jboss-dg)
 jboss_datagrid_ispn_server_console_log: "{{ jboss_datagrid_service_log_dir }}/console.log"
 jboss_datagrid_ispn_server_user: "{{ jboss_datagrid_user }}"
 jboss_datagrid_startup_wait: 30
 jboss_datagrid_shutdown_wait: 30
 
-# Runtime settings
+# Runtime settings used in (standalone|clustered).conf
 jboss_datagrid_runtime_bind_address: "0.0.0.0"
 jboss_datagrid_bind_address_management: "0.0.0.0"
 jboss_datagrid_runtime_logging_timezone: "America/New_York"
@@ -34,6 +34,10 @@ jboss_datagrid_runtime_java_home: ""                       # Specify the locatio
 jboss_datagrid_runtime_java_bin: ""                        # Specify the exact Java VM executable to use.
 jboss_datagrid_runtime_preserve_java_opts: ""              # Prevent manipulation of JVM options by shell scripts. true or false
 jboss_datagrid_runtime_secmgr: ""                          # Whether to run with a security manager enabled. true or false
+
+# Application settings used in (standalone|clustered).xml
+jboss_datagrid_cache_max_entries: 50000
+jboss_datagrid_multicast_address: "234.99.54.14"
 
 # Kernel parameters
 # jboss_datagrid_kernel_parameters: []
