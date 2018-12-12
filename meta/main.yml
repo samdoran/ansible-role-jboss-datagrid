@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: jboss-datagrid
   author: Sam Doran
   description: "Install JBoss Data Grid"
   company:
